@@ -1,1 +1,2 @@
-export const SET_USER: string = 'SET_USER'
+export const SIGN_IN: string = 'SIGN_IN'
+export const SIGN_OUT: string = 'SIGN_OUT'
