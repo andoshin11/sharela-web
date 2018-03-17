@@ -2,6 +2,7 @@
   <div class="home">
     <img src="../assets/logo.png">
     <HelloWorld msg="Welcome to my Firebase App"/>
+    <img src="../assets/login_line.png" class="login">
   </div>
 </template>
 
@@ -16,3 +17,11 @@ export default Vue.extend({
   }
 });
 </script>
+
+<style scoped>
+  .login {
+    width: 142px;
+    height: 40px;
+  }
+</style>
+
