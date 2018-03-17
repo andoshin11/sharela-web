@@ -8,6 +8,30 @@
   </div>
 </template>
 
+<script lang="ts">
+import Vue from 'vue'
+import { mapActions } from 'vuex'
+import * as firebase from "firebase"
+
+// vuex
+import { SIGN_IN, SIGN_OUT } from '@/store/modules/user/actionTypes'
+
+export default Vue.extend({
+  methods: {
+    ...mapActions('user', [SIGN_IN, SIGN_OUT])
+  },
+  mounted () {
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) {
+        this[SIGN_IN](user)
+      } else {
+        this[SIGN_OUT]()
+      }
+    })
+  }
+})
+</script>
+
 <style lang="scss">
 #app {
   font-family: "Avenir", Helvetica, Arial, sans-serif;
