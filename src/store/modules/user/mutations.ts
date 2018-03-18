@@ -4,7 +4,7 @@ import { MutationTree } from 'vuex'
 import { User, UserState } from '@/types/User'
 
 // mutation types
-import { UPDATE_USER, CLEAR_USER } from './mutationTypes'
+import { UPDATE_USER, CLEAR_USER, SET_USERS } from './mutationTypes'
 
 const mutations: MutationTree<UserState> = {
   [UPDATE_USER](state, user: User): void {
@@ -12,6 +12,9 @@ const mutations: MutationTree<UserState> = {
   },
   [CLEAR_USER](state): void {
     state.user = null
+  },
+  [SET_USERS](state, users: User[]): void {
+    state.list = users
   }
 }
 

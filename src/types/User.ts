@@ -14,5 +14,6 @@ export interface User {
 }
 
 export interface UserState {
-  user: null | User
+  user: null | User,
+  list: null[] | User[]
 }
