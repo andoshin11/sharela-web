@@ -4,16 +4,15 @@
       <div class="header__title">シェアラWeb</div>
     </el-col>
     <el-col :span="6">
-      <el-dropdown trigger="click" @command="handleCommand">
-        <span class="el-dropdown-link">
-          メニュー<i class="el-icon-arrow-down el-icon--right"></i>
-        </span>
-        <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item>Action 3</el-dropdown-item>
-          <el-dropdown-item disabled>Action 4</el-dropdown-item>
-          <el-dropdown-item v-if="user" divided command="signOut">ログアウト</el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+      <el-menu menu-trigger="click" mode="horizontal">
+        <el-menu-item index="1">メンバー</el-menu-item>
+        <el-submenu index="2">
+          <template slot="title">メニュー</template>
+          <el-menu-item index="2-1">item one</el-menu-item>
+          <el-menu-item index="2-2">item two</el-menu-item>
+          <el-menu-item index="2-3" @click="signOut" v-if="user">ログアウト</el-menu-item>
+        </el-submenu>
+      </el-menu>
     </el-col>
   </el-row>
 </template>
@@ -33,12 +32,6 @@ export default Vue.extend({
     ...mapState('user', ['user'])
   },
   methods: {
-    handleCommand (cmd: string) {
-      switch (cmd) {
-        case 'signOut':
-          this.signOut()
-      }
-    },
     async signOut (): Promise<void> {
       try {
         this.loading = true
