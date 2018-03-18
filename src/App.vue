@@ -1,11 +1,16 @@
 <template>
-  <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view/>
-  </div>
+  <el-container id="app">
+    <el-header>
+      <the-header/>
+      <div id="nav">
+        <router-link to="/">Home</router-link> |
+        <router-link to="/about">About</router-link>
+      </div>
+    </el-header>
+    <el-main>
+      <router-view/>
+    </el-main>
+  </el-container>
 </template>
 
 <script lang="ts">
@@ -16,16 +21,61 @@ import * as firebase from "firebase"
 // vuex
 import { SIGN_IN, SIGN_OUT } from '@/store/modules/user/actionTypes'
 
+// types
+import { User, RawUser } from '@/types/User'
+import { error } from 'util'
+
+// components
+import TheHeader from '@/components/The/Header.vue'
+
 export default Vue.extend({
-  methods: {
-    ...mapActions('user', [SIGN_IN, SIGN_OUT])
+  components: {
+    TheHeader
   },
-  mounted () {
-    firebase.auth().onAuthStateChanged(user => {
+  methods: {
+    ...mapActions('user', [SIGN_IN, SIGN_OUT]),
+    async isNewUser (user: RawUser): Promise<boolean> {
+      try {
+        const snapshot = await firebase.database().ref(`/users/${user.uid}`).once('value')
+        const val = snapshot.val()
+        return val ? false : true
+      } catch (e) {
+        console.log('error')
+        console.log(e)
+        return true
+      }
+    },
+    async createUser (user: RawUser): Promise<void> {
+      try {
+        const newUser: User = {
+          displayName: user.displayName,
+          email: user.email,
+          uid: user.uid,
+          photoURL: user.photoURL,
+          verified: false
+        }
+        const result = await firebase.database().ref(`/users/${user.uid}`).set(newUser)
+      } catch (e) {
+      }
+    }
+  },
+  async mounted (): Promise<void> {
+    firebase.auth().onAuthStateChanged(async user => {
       if (user) {
-        this[SIGN_IN](user)
+        this['SIGN_IN'](user)
+
+        this.$notify({
+          title: '成功',
+          message: 'ログインに成功しました',
+          type: 'success'
+        })
+
+        // check user existence
+        const isNewUser = await this.isNewUser(user)
+
+        if (isNewUser) this.createUser(user)
       } else {
-        this[SIGN_OUT]()
+        this.SIGN_OUT()
       }
     })
   }
