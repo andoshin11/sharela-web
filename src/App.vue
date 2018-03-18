@@ -64,12 +64,6 @@ export default Vue.extend({
       if (user) {
         this['SIGN_IN'](user)
 
-        this.$notify({
-          title: '成功',
-          message: 'ログインに成功しました',
-          type: 'success'
-        })
-
         // check user existence
         const isNewUser = await this.isNewUser(user)
 
