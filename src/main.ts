@@ -5,7 +5,7 @@ import store from "./store";
 import "./registerServiceWorker";
 import * as firebase from "firebase"
 import Element from 'element-ui'
-import locale from 'element-ui/lib/locale/lang/ja'
+const locale = require('element-ui/lib/locale/lang/ja')
 import '@/assets/css/element/index.css'
 
 Vue.config.productionTip = false;
