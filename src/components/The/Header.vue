@@ -4,13 +4,14 @@
       <div class="header__title">シェアラWeb</div>
     </el-col>
     <el-col :span="6">
-      <el-menu menu-trigger="click" mode="horizontal">
-        <el-menu-item index="1">メンバー</el-menu-item>
-        <el-submenu index="2">
+      <el-menu default-active="1" menu-trigger="click" mode="horizontal">
+        <el-menu-item index="1" @click="goTo('/')">ホーム</el-menu-item>
+        <el-menu-item index="2" @click="goTo('/members')">メンバー</el-menu-item>
+        <el-submenu index="3">
           <template slot="title">メニュー</template>
-          <el-menu-item index="2-1">item one</el-menu-item>
-          <el-menu-item index="2-2">item two</el-menu-item>
-          <el-menu-item index="2-3" @click="signOut" v-if="user">ログアウト</el-menu-item>
+          <el-menu-item index="3-1">item one</el-menu-item>
+          <el-menu-item index="3-2">item two</el-menu-item>
+          <el-menu-item index="3-3" @click="signOut" v-if="user">ログアウト</el-menu-item>
         </el-submenu>
       </el-menu>
     </el-col>
@@ -32,6 +33,9 @@ export default Vue.extend({
     ...mapState('user', ['user'])
   },
   methods: {
+    goTo (path): void {
+      this.$router.push(path)
+    },
     async signOut (): Promise<void> {
       try {
         this.loading = true
